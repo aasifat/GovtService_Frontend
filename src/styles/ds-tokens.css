@@ -1,0 +1,207 @@
+/* Amar Sheba design system, Phase 1: tokens.
+   NEW names only (--color-*, --space-*, --radius-*, --shadow-*, --text-*,
+   --leading-*, --font-*, --weight-*, --ease-*, --dur-*). No legacy variable
+   (--surface, --ink, --primary, --page-ink ...) is read, redefined or aliased
+   here. This file is imported ONLY by the styleguide entry
+   (src/styleguide/main.jsx), never by main.jsx or an existing CSS file.
+   Aliasing legacy names to these tokens is Phase 2.
+
+   Every value below is a PROPOSAL. The styleguide computes WCAG contrast from
+   these exact values and reports failures; nothing is tuned silently.
+
+   color-scheme is deliberately NOT set here: the app already sets it (tokens.css),
+   and the styleguide sets its own (ds-styleguide.css).
+
+   Themes: dark deep green is the default. A light theme is selected with
+   data-theme="light" on <html> (or on any element, which the styleguide uses to
+   probe both themes at once). */
+
+/* ---------- colour: dark (default) ---------- */
+:root,
+[data-theme="dark"] {
+  --color-canvas: #0a1813;
+  --color-page: #0f241c; /* Phase 10: the app's page background (body, and sticky bars that slide over it) */
+  --color-surface-1: #12271f; /* Step 2.0: lightened from #10231C (same hue); see the styleguide comparison */
+  --color-surface-2: #163027;
+  --color-surface-3: #1e3d32;
+
+  --color-text: #f1ede0;
+  --color-text-muted: #a8b8ad;
+
+  --color-line: #27473b; /* decorative hairlines (exempt from contrast) */
+  --color-border-input: #5b8473; /* input / control borders (3:1 non-text) */
+
+  --color-brand: #4db88a; /* identity green: links, active states */
+  --color-brand-soft: #163b2e; /* tinted background for brand badges */
+  --color-text-on-brand: #07130e;
+
+  --color-action: #e2b04a; /* brass: the one main action */
+  --color-action-hover: #ecc374;
+  --color-action-active: #cf9d38;
+  --color-action-ink: #e2b04a; /* brass used as text / big numbers */
+  --color-text-on-action: #1b1405;
+
+  --color-accent: #e0675a; /* flag red: brand disc, NEW badge */
+  --color-text-on-accent: #1b0a07;
+
+  --color-success: #5cc28f;
+  --color-success-bg: #12392a;
+  --color-warning: #e8b552;
+  --color-warning-bg: #3a2e10;
+  --color-error: #ff9d8f;
+  --color-error-bg: #3f1b17;
+
+  --color-hero: #0d2a20; /* deep green band, same family in both themes */
+  --color-text-on-hero: #f1ede0;
+  --color-text-on-hero-muted: #b7c6bc;
+
+  --color-focus: #7fd1aa; /* focus ring on canvas and surfaces */
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4), 0 2px 8px rgb(0 0 0 / 0.28);
+  --shadow-2: 0 4px 12px rgb(0 0 0 / 0.42), 0 12px 28px rgb(0 0 0 / 0.34);
+  --shadow-3: 0 12px 32px rgb(0 0 0 / 0.5), 0 28px 64px rgb(0 0 0 / 0.42);
+}
+
+/* ---------- colour: light (alternate) ---------- */
+[data-theme="light"] {
+  --color-canvas: #f5f1e6;
+  --color-page: #efe6d0;
+  --color-surface-1: #fffdf7;
+  --color-surface-2: #eee8d7;
+  --color-surface-3: #e4dcc6;
+
+  --color-text: #13201a;
+  --color-text-muted: #4b5a51;
+
+  --color-line: #d8ceb4;
+  --color-border-input: #8e8466;
+
+  --color-brand: #124f3a;
+  --color-brand-soft: #dceae1;
+  --color-text-on-brand: #fffdf7;
+
+  --color-action: #e7b84f;
+  --color-action-hover: #f0c762;
+  --color-action-active: #d3a23a;
+  --color-action-ink: #8a5a0b;
+  --color-text-on-action: #1b1405;
+
+  --color-accent: #b3382c;
+  --color-text-on-accent: #ffffff;
+
+  --color-success: #1f7a4d;
+  --color-success-bg: #e1f1e7;
+  --color-warning: #935d00; /* Step 2.0: darkened from #9A6200 so it passes on warning-bg */
+  --color-warning-bg: #f6e8cb;
+  --color-error: #b3261e;
+  --color-error-bg: #f8e1de;
+
+  --color-hero: #0e3b2c;
+  --color-text-on-hero: #f1ede0;
+  --color-text-on-hero-muted: #b7c6bc;
+
+  --color-focus: #124f3a;
+
+  --shadow-1: 0 1px 2px rgb(36 28 18 / 0.1), 0 2px 8px rgb(36 28 18 / 0.08);
+  --shadow-2: 0 4px 12px rgb(36 28 18 / 0.12), 0 12px 28px rgb(36 28 18 / 0.1);
+  --shadow-3: 0 12px 32px rgb(36 28 18 / 0.18), 0 28px 64px rgb(36 28 18 / 0.14);
+}
+
+/* ---------- theme-independent tokens ---------- */
+:root {
+  /* focus ring inside the deep-green hero / band areas (same value in both
+     themes, because the band is deep green in both) */
+  --color-focus-on-hero: #7fd1aa;
+
+  /* spacing: 4px steps up to 16, then 8px-grid steps */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px; /* section rhythm on desktop */
+
+  --radius-sm: 4px; /* inputs, table cells */
+  --radius-md: 8px; /* buttons, small surfaces */
+  --radius-lg: 12px; /* surfaces, dialogs */
+  --radius-xl: 20px; /* large feature panels */
+  --radius-pill: 999px; /* badges, chips only */
+
+  --shadow-0: none; /* hairline only: the default elevation */
+
+  --border-hair: 1px; /* dividers, surface borders */
+  --border-strong: 2px; /* focus ring, selected state */
+
+  /* fonts. Two weights at most per family (see styleguide.html for the loaded
+     weights): Inter 400/600, Hind Siliguri 400/600, Source Serif 4 600,
+     Noto Serif Bengali 600, JetBrains Mono 500. Latin glyphs come from the
+     first family; Bangla glyphs fall through to the Bengali family. */
+  --font-sans: "Inter", "Inter Fallback", "Hind Siliguri", "Hind Siliguri Fallback", system-ui, "Segoe UI", sans-serif;
+  --font-serif: "Source Serif 4", "Source Serif Fallback", "Noto Serif Bengali", "Noto Serif Bengali Fallback", Georgia, "Times New Roman", serif;
+  --font-sans-bn: "Hind Siliguri", "Hind Siliguri Fallback", "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-serif-bn: "Noto Serif Bengali", "Noto Serif Bengali Fallback", "Source Serif 4", "Source Serif Fallback", Georgia, serif;
+  --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, Consolas, monospace;
+
+  --weight-regular: 400;
+  --weight-strong: 600; /* buttons, labels, sans headings, and the only serif weight */
+  --weight-mono: 500;
+
+  /* type scale: desktop / mobile via clamp() */
+  --text-display: clamp(2.25rem, 1.45rem + 3.4vw, 3.5rem); /* 36 -> 56 */
+  --text-h1: clamp(1.875rem, 1.45rem + 1.6vw, 2.5rem); /* 30 -> 40 */
+  --text-h2: clamp(1.5rem, 1.25rem + 0.9vw, 1.75rem); /* 24 -> 28 */
+  --text-h3: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); /* 18 -> 20 */
+  --text-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); /* 16 -> 17 */
+  --text-small: 0.875rem; /* 14 */
+  --text-label: 0.9375rem; /* 15 (labels, buttons) */
+  --text-number: clamp(2.25rem, 1.8rem + 1.8vw, 2.75rem); /* 36 -> 44 */
+  --text-code: 0.875rem; /* 14 */
+  --text-badge: 0.8125rem; /* 13 (Latin only; Bangla is floored below) */
+  --text-min-bn: 14px; /* Bangla never renders smaller than this, even at the A- size setting (root 15px) */
+
+  --leading-display: 1.08;
+  --leading-h1: 1.15;
+  --leading-h2: 1.25;
+  --leading-h3: 1.35;
+  --leading-body: 1.65;
+  --leading-small: 1.5;
+  --leading-label: 1.2;
+  --leading-number: 1;
+  --leading-code: 1.5;
+
+  /* motion: subtle, one easing family */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --dur-1: 120ms; /* hover, press */
+  --dur-2: 200ms; /* popovers, toasts, state changes */
+  --dur-3: 320ms; /* section reveals, the one-time hero ease (max) */
+
+  --size-control: 44px; /* minimum touch target / default control height */
+  --size-control-sm: 36px;
+  --size-input: 48px;
+}
+
+/* Bangla runs larger and taller than Latin at the same nominal size, and never
+   below --text-min-bn. Every Bangla size is wrapped in max() so the floor holds
+   when the app's A- setting shrinks the root font size to 15px.
+   Serif Bangla rule: serif is used only for Display, H1, H2 and big numerals,
+   and only at 24px or more, so --text-h2 has an absolute 24px floor too. Every
+   other Bangla level is sans (Hind Siliguri). */
+:lang(bn) {
+  --text-body: max(var(--text-min-bn), clamp(1.0625rem, 1.02rem + 0.15vw, 1.125rem)); /* 17 -> 18 */
+  --text-small: max(var(--text-min-bn), 0.9375rem); /* 15 */
+  --text-label: max(var(--text-min-bn), 1rem); /* 16 */
+  --text-badge: max(var(--text-min-bn), 0.875rem); /* 14 */
+  --text-code: max(var(--text-min-bn), 0.875rem); /* 14 */
+  --text-h3: max(var(--text-min-bn), clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem));
+  --text-h2: max(24px, clamp(1.5rem, 1.25rem + 0.9vw, 1.75rem)); /* serif Bangla floor */
+  --leading-body: 1.8;
+  --leading-small: 1.65;
+  --leading-h1: 1.3;
+  --leading-h2: 1.35;
+  --leading-h3: 1.45;
+  --leading-display: 1.25;
+}

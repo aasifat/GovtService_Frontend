@@ -1,0 +1,34 @@
+<!doctype html>
+<!--
+  Standalone design-system styleguide (Phase 1, extended in Step 2.0). Open it while the dev server is
+  running:  http://localhost:5173/styleguide.html
+  It is NOT a route of the app and is NOT part of the production build:
+  `vite build` starts from index.html only, and nothing links to this file.
+  The new Google Fonts are loaded here and nowhere else.
+  Weights requested (max two per family, none unused):
+    Inter 400, 600 · Hind Siliguri 400, 600 · Source Serif 4 600
+    Noto Serif Bengali 600 · JetBrains Mono 500
+  display=swap makes every face use font-display: swap.
+-->
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Amar Sheba design system · styleguide</title>
+    <script>
+      /* ?lang=bn sets the page language, so :lang(bn) type rules apply as they will in the app */
+      document.documentElement.lang = new URLSearchParams(location.search).get("lang") === "bn" ? "bn" : "en";
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&family=Inter:wght@400;600&family=JetBrains+Mono:wght@500&family=Noto+Serif+Bengali:wght@600&family=Source+Serif+4:wght@600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/styleguide/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,268 @@
+/* Chat history: header tweaks, conversation list, history drawer, expanded
+   mode with a sidebar. Everything here sits inside the chat panel (a --surface
+   card), so --ink / --muted are the right text colors. */
+
+/* .chat-main holds the header, body and form. In the normal panel it simply
+   fills the column; in expanded mode it sits beside the sidebar. */
+.chat-main {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.chat-head {
+  gap: 6px;
+}
+.chat-title {
+  overflow: hidden;
+}
+.chat-title b,
+.chat-title span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chat-title span {
+  display: block;
+}
+.chat-title .live {
+  margin-inline-end: 6px;
+}
+
+/* ---- conversation list ---- */
+.conv-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.conv {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+}
+.conv:hover,
+.conv:focus-within {
+  background: var(--color-surface-2);
+}
+.conv.on {
+  background: var(--color-brand-soft);
+  border-color: color-mix(in srgb, var(--color-brand) 35%, var(--color-line));
+}
+.conv-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 9px 10px;
+  border: 0;
+  background: none;
+  text-align: start;
+  cursor: pointer;
+  color: var(--color-text);
+}
+.conv-title {
+  font-weight: 600;
+  font-size: 0.93rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.conv-time {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+.conv-time b {
+  color: var(--color-brand);
+  font-weight: 600;
+}
+.conv .conv-act {
+  width: 32px;
+  height: 32px;
+  border-color: transparent;
+  background: none;
+  color: var(--color-text-muted);
+}
+.conv .conv-act:hover {
+  background: var(--color-surface-1);
+  color: var(--color-text);
+}
+.conv-edit {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 4px 6px;
+}
+.conv-edit input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.93rem;
+  color: var(--color-text);
+  background: var(--color-page);
+  border: 1px solid var(--color-brand);
+  border-radius: 10px;
+  padding: 7px 10px;
+}
+.conv-edit .icon-btn {
+  width: 32px;
+  height: 32px;
+}
+.conv-note {
+  margin: 0;
+  padding: 18px 8px;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+.conv-note p {
+  margin: 0 0 10px;
+}
+.profile-card .conv-note {
+  text-align: start;
+  padding-inline: 0;
+}
+
+/* RequireLogin shrunk to fit a narrow drawer */
+.req-compact {
+  flex-direction: column;
+  padding: 14px;
+  box-shadow: none;
+}
+
+/* ---- history drawer (inside the chat panel) ---- */
+.hist {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+}
+.hist-back {
+  display: none;
+}
+.hist-drawer {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface-1);
+  color: var(--color-text);
+}
+.hist-drawer:focus {
+  outline: none;
+}
+.hist-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 12px 12px 14px;
+  border-bottom: 1px solid var(--color-line);
+}
+.hist-head h2 {
+  font-size: 1.05rem;
+}
+.hist-head .icon-btn {
+  border-color: transparent;
+  background: none;
+}
+.hist-head .icon-btn:hover {
+  background: var(--color-surface-2);
+}
+.hist-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  overscroll-behavior: contain;
+}
+
+/* ---- expanded mode (desktop only): centered, with a persistent sidebar ---- */
+.chat.expanded {
+  inset: 32px;
+  margin: auto;
+  width: min(1120px, calc(100vw - 64px));
+  height: min(800px, calc(100% - 64px));
+  flex-direction: row;
+  transform-origin: center;
+}
+.chat-side {
+  width: 290px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 12px;
+  background: var(--color-surface-2);
+  border-inline-end: 1px solid var(--color-line);
+  min-height: 0;
+}
+.side-new {
+  justify-content: center;
+}
+.side-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 6px 6px 0;
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+.side-list {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+.chat.expanded .chat-body {
+  padding: 22px max(22px, 6%);
+}
+.chat.expanded .msg {
+  max-width: 78%;
+}
+.chat.expanded .chat-form {
+  padding: 14px max(22px, 6%);
+}
+
+/* ---- phones: history is a slide-over with a backdrop ---- */
+@media (max-width: 640px) {
+  .hist-back {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 16, 12, 0.55);
+  }
+  .hist-drawer {
+    position: relative;
+    flex: none;
+    width: min(88%, 340px);
+    box-shadow: 14px 0 40px -16px rgba(0, 0, 0, 0.6);
+    border-inline-end: 1px solid var(--color-line);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @media (max-width: 640px) {
+    .hist-drawer {
+      animation: hist-in 0.2s ease-out;
+    }
+    .hist-back {
+      animation: hist-fade 0.2s ease-out;
+    }
+  }
+}
+@keyframes hist-in {
+  from {
+    transform: translateX(-100%);
+  }
+}
+@keyframes hist-fade {
+  from {
+    opacity: 0;
+  }
+}

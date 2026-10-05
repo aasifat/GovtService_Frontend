@@ -1,0 +1,17 @@
+/* Phase 4: the service tile grid (.sec-head, .tiles, .tile*) was replaced by the
+   grouped directory in ds-directory.css. What is left is the #services section
+   frame: its spacing and the dashed rule under the hero. */
+
+.services {
+  padding-top: clamp(24px, 4vh, 56px);
+  padding-bottom: 72px;
+  position: relative;
+}
+.services::before {
+  content: "";
+  display: block;
+  height: 0;
+  margin-bottom: clamp(24px, 4.5vh, 40px);
+  border-top: 2px dashed var(--color-action-ink);
+  opacity: 0.55;
+}

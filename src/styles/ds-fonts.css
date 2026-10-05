@@ -1,0 +1,95 @@
+﻿/* Amar Sheba design system: metric-adjusted fallback font faces (Step 2.0).
+
+   While a Google webfont is still downloading (font-display: swap), the browser
+   shows a system font. If that system font is narrower or taller than the
+   webfont, the page jumps when the real font arrives. Each face below is a
+   LOCAL system font scaled with size-adjust and given the webfont's ascent and
+   descent, so it occupies about the same space as the webfont.
+
+   Nothing is downloaded: src is local() only. These names are listed after the
+   webfont in the font stacks in ds-tokens.css (for example "Inter", then
+   "Inter Fallback").
+
+   How the numbers were obtained: for each webfont/system-font pair, the same
+   sample text was measured at 100px in a real browser. size-adjust = webfont
+   width / system-font width. ascent/descent-override = the webfont's
+   ascent/descent divided by size-adjust. line-gap-override is 0%.
+
+   Platform caveat: the numbers were measured against this machine's fonts
+   (Arial, Times New Roman, Nirmala UI, Consolas on Windows). The extra local()
+   names (Helvetica, Liberation ...) are metric near-matches and are NOT
+   verified. On a platform with none of the listed fonts the face is skipped and
+   the browser falls back to the next family in the stack.
+
+   No selectors in this file, only @font-face rules. */
+@font-face {
+  font-family: "Inter Fallback";
+  font-weight: 400;
+  font-style: normal;
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 106.77%;
+  ascent-override: 90.85%;
+  descent-override: 22.48%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Inter Fallback";
+  font-weight: 600;
+  font-style: normal;
+  src: local("Arial Bold"), local("Helvetica Bold"), local("Liberation Sans Bold");
+  size-adjust: 102.16%;
+  ascent-override: 94.95%;
+  descent-override: 23.49%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Hind Siliguri Fallback";
+  font-weight: 400;
+  font-style: normal;
+  src: local("Nirmala UI");
+  size-adjust: 84.97%;
+  ascent-override: 131.81%;
+  descent-override: 58.85%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Hind Siliguri Fallback";
+  font-weight: 600;
+  font-style: normal;
+  src: local("Nirmala UI Bold");
+  size-adjust: 79.15%;
+  ascent-override: 141.51%;
+  descent-override: 63.17%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Source Serif Fallback";
+  font-weight: 600;
+  font-style: normal;
+  src: local("Times New Roman Bold"), local("Times Bold"), local("Liberation Serif Bold");
+  size-adjust: 111.82%;
+  ascent-override: 93.00%;
+  descent-override: 30.41%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Noto Serif Bengali Fallback";
+  font-weight: 600;
+  font-style: normal;
+  src: local("Nirmala UI Bold");
+  size-adjust: 78.63%;
+  ascent-override: 138.62%;
+  descent-override: 63.59%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "JetBrains Mono Fallback";
+  font-weight: 500;
+  font-style: normal;
+  src: local("Consolas"), local("Courier New");
+  size-adjust: 109.13%;
+  ascent-override: 93.47%;
+  descent-override: 27.49%;
+  line-gap-override: 0%;
+}
+

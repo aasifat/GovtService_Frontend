@@ -1,0 +1,307 @@
+/* Accounts: header menus, login/register, form fields, dialog, RequireLogin.
+   Phase 10: colours, radii and fonts come from the design-system tokens. */
+
+/* ---- header: popovers and menus moved to ds-chrome.css in Phase 2b; the avatar rules stay because the profile page uses .avatar-lg ---- */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--color-brand);
+  color: var(--color-text-on-brand);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.avatar:hover {
+  background: var(--color-brand);
+  box-shadow: 0 0 0 3px var(--color-brand-soft);
+}
+.avatar-lg {
+  width: 56px;
+  height: 56px;
+  font-size: 1.5rem;
+  cursor: default;
+}
+.avatar-lg:hover {
+  background: var(--color-brand);
+  box-shadow: none;
+}
+
+/* ---- auth pages ---- */
+.auth-page {
+  max-width: 520px;
+}
+.auth-head h1 {
+  font-size: clamp(1.7rem, 4vw, 2.2rem);
+  color: var(--color-text);
+}
+.auth-head p {
+  color: var(--color-text-muted);
+  margin: 8px 0 20px;
+}
+.auth-card,
+.profile-card {
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.auth-submit {
+  justify-content: center;
+  width: 100%;
+}
+.auth-submit:disabled,
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.auth-alt {
+  margin: 0;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+.demo-hint {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px dashed var(--color-line);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+.demo-hint > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.demo-hint b {
+  color: var(--color-text);
+}
+.demo-hint small {
+  opacity: 0.85;
+}
+.demo-hint .btn-outline {
+  flex-shrink: 0;
+  padding: 7px 12px;
+}
+
+/* ---- form fields ---- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field label,
+.lang-pref legend {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.field-box {
+  position: relative;
+  display: flex;
+}
+.field input {
+  width: 100%;
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  padding: 11px 12px;
+  min-height: 44px;
+}
+.field input[type="password"],
+.field input[type="text"][autocomplete="current-password"],
+.field input[type="text"][autocomplete="new-password"] {
+  padding-inline-end: 46px;
+}
+.field input[readonly] {
+  opacity: 0.75;
+}
+.field input:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 1px;
+}
+.field.has-err input {
+  border-color: var(--color-error);
+}
+.pw-toggle {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: 44px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-radius: 10px;
+}
+.pw-toggle:hover {
+  color: var(--color-text);
+}
+.field-hint,
+.field-err {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+.field-err {
+  color: var(--color-error);
+  font-weight: 500;
+}
+.form-err {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+  font-weight: 500;
+}
+
+/* ---- RequireLogin card ---- */
+.req-login {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-2);
+}
+.req-ic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+}
+.req-txt h2 {
+  font-size: 1.1rem;
+}
+.req-txt p {
+  margin: 4px 0 12px;
+  color: var(--color-text-muted);
+}
+.req-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.req-actions a {
+  text-decoration: none;
+}
+
+/* ---- dialog ---- */
+.dlg-back {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(8, 16, 12, 0.62);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+.dlg {
+  width: min(480px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  border: 1px solid var(--color-line);
+  border-radius: 18px;
+  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+}
+.dlg:focus {
+  outline: none;
+}
+.dlg-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px 0;
+}
+.dlg-head h2 {
+  font-size: 1.2rem;
+}
+.dlg-body {
+  padding: 12px 18px;
+}
+.dlg-body p {
+  margin: 0 0 10px;
+  color: var(--color-text-muted);
+}
+.dlg-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 4px 18px 18px;
+}
+
+/* destructive buttons, shared */
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: none;
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+}
+.btn-danger:hover:not(:disabled) {
+  background: var(--color-error-bg);
+}
+.btn-danger.solid {
+  background: var(--color-error);
+  color: var(--color-surface-1);
+}
+.btn-danger.solid:hover:not(:disabled) {
+  background: var(--color-error);
+  filter: brightness(1.08);
+}
+.btn-danger:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+@media (max-width: 640px) {
+  .req-login {
+    flex-direction: column;
+  }
+}
+
+/* anchors styled as buttons */
+a.btn-primary,
+a.btn-outline,
+a.btn-text {
+  text-decoration: none;
+}

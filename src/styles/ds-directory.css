@@ -1,0 +1,582 @@
+/* Amar Sheba design system, Phase 4: the service directory (Home) and the
+   service detail page.
+
+   Scoped: every selector starts with .ds-dir or .ds-svc. No element selectors
+   at all (no body, html, *, a, button, h1-h6, ul, li ...); elements are styled
+   through their classes. The only :root-like thing here is none: this file
+   declares no custom properties and changes no token.
+
+   Reads ONLY the new DS tokens from ds-tokens.css. Serif is used for the page H1
+   and the section H2s only, at 24px or more. Bangla sizes come from the same
+   tokens, which carry the 14px Bangla floor (also at the A- setting).
+
+   Motion: hover tint, a 4px chevron nudge and a 1px press settle. All of it is
+   removed under prefers-reduced-motion (the tint stays: it is not movement). */
+
+/* ================= directory (Home #services) ================= */
+.ds-dir-head {
+  max-width: 62ch;
+  margin-bottom: var(--space-6);
+}
+.ds-dir-h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: var(--weight-strong);
+  font-size: max(24px, var(--text-h2));
+  line-height: var(--leading-h2);
+  color: var(--color-text);
+}
+.ds-dir-sub {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+.ds-dir {
+  display: grid;
+  gap: var(--space-6);
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+.ds-dir-group {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: var(--border-hair) solid var(--color-line);
+}
+.ds-dir-title {
+  margin: 0;
+  align-self: start;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  color: var(--color-text);
+}
+.ds-dir-count {
+  margin-inline-start: var(--space-2);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+}
+.ds-dir-list,
+.ds-dir-guides {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ds-dir-row {
+  border-bottom: var(--border-hair) solid var(--color-line);
+}
+.ds-dir-row:last-child {
+  border-bottom: 0;
+}
+.ds-dir-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.ds-dir-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 64px;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background-color var(--dur-1) var(--ease-standard), transform var(--dur-1) var(--ease-standard);
+}
+.ds-dir-main:hover {
+  background: var(--color-surface-3);
+}
+.ds-dir-main:active {
+  transform: translateY(1px);
+}
+.ds-dir-main:focus-visible,
+.ds-dir-guide:focus-visible,
+.ds-dir-toggle:focus-visible,
+.ds-dir-ask-btn:focus-visible {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+}
+.ds-dir-ic {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+  transition: background-color var(--dur-1) var(--ease-standard), color var(--dur-1) var(--ease-standard);
+}
+.ds-dir-main:hover .ds-dir-ic {
+  background: var(--color-brand);
+  color: var(--color-text-on-brand);
+}
+.ds-dir-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ds-dir-name {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+}
+.ds-dir-desc {
+  margin-top: 3px;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+.ds-dir-chev {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  transition: transform var(--dur-1) var(--ease-standard), color var(--dur-1) var(--ease-standard);
+}
+.ds-dir-main:hover .ds-dir-chev {
+  transform: translateX(4px);
+  color: var(--color-brand);
+}
+.ds-dir-guides {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-4);
+  padding: 0 var(--space-3) var(--space-3) calc(var(--space-3) + 44px + var(--space-4));
+}
+.ds-dir-guides[hidden] {
+  display: none;
+}
+.ds-dir-guide {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-brand);
+  text-underline-offset: 3px;
+}
+.ds-dir-guide:hover {
+  color: var(--color-text);
+}
+.ds-dir-toggle {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: var(--size-control);
+  height: var(--size-control);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+.ds-dir-toggle:hover {
+  background: var(--color-surface-3);
+  color: var(--color-text);
+}
+.ds-dir-toggle-ic {
+  transition: transform var(--dur-1) var(--ease-standard);
+}
+.ds-dir-toggle[aria-expanded="true"] .ds-dir-toggle-ic {
+  transform: rotate(180deg);
+}
+
+/* "Not sure which one?": the existing assistant hand-off, kept as a quiet strip */
+.ds-dir-ask {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+  padding: var(--space-5);
+  background: var(--color-surface-2);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+.ds-dir-ask-text {
+  min-width: 0;
+}
+.ds-dir-ask-title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  color: var(--color-text);
+}
+.ds-dir-ask-sub {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+
+/* tablet and below: the group label sits above its rows */
+@media (max-width: 860px) {
+  .ds-dir-group {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+}
+
+/* phones: 56px+ single-column rows, group labels stick under the header, guide
+   links sit behind the row's chevron button */
+@media (max-width: 640px) {
+  .ds-dir {
+    gap: var(--space-5);
+  }
+  .ds-dir-group {
+    gap: 0;
+    padding-top: 0;
+  }
+  .ds-dir-title {
+    position: sticky;
+    top: calc(1.4014rem + 33px); /* the compact header's height */
+    z-index: 5;
+    padding: var(--space-3) 0;
+    /* Phase 10: the page behind paints --color-page (body background); the sticky
+       label uses the same token so it matches what it slides over. */
+    background: var(--color-page);
+    box-shadow: 0 1px 0 var(--color-line);
+  }
+  .ds-dir-main {
+    min-height: 56px;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-2);
+  }
+  .ds-dir-chev {
+    display: none;
+  }
+  .ds-dir-guides {
+    display: block;
+    padding: 0 var(--space-2) var(--space-2) calc(var(--space-2) + 44px + var(--space-3));
+  }
+  .ds-dir-guide {
+    width: 100%;
+    min-height: var(--size-control);
+  }
+  .ds-dir-ask {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ================= service detail ================= */
+.ds-svc {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+/* The breadcrumb is the shared legacy .crumbs (0.9rem), which is 13.5px at the A- setting.
+   On this page, in Bangla, it keeps the 14px minimum. The Guide page is not touched. */
+.ds-svc:lang(bn) .crumbs {
+  font-size: max(0.9rem, var(--text-min-bn));
+}
+.ds-svc-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: var(--space-7);
+  align-items: start;
+  margin: var(--space-6) 0 var(--space-7);
+}
+.ds-svc-intro {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  min-width: 0;
+}
+.ds-svc-ic {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-lg);
+  background: var(--color-brand);
+  color: var(--color-text-on-brand);
+}
+.ds-svc-intro-text {
+  min-width: 0;
+}
+.ds-svc-title {
+  overflow-wrap: anywhere;
+}
+.ds-svc-desc {
+  margin: var(--space-2) 0 0;
+  max-width: 52ch;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+.ds-svc-glance-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.ds-svc-glance-title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  color: var(--color-text);
+}
+.ds-svc-facts {
+  margin: 0;
+}
+.ds-svc-fact {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-top: var(--border-hair) solid var(--color-line);
+}
+.ds-svc-fact-label {
+  flex-shrink: 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+.ds-svc-fact-value {
+  margin: 0;
+  min-width: 0;
+  text-align: end;
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  color: var(--color-text);
+}
+.ds-svc-portals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+  justify-items: end;
+}
+.ds-svc-portal {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  overflow-wrap: anywhere;
+  color: var(--color-brand);
+  text-underline-offset: 3px;
+}
+.ds-svc-portal:hover {
+  color: var(--color-text);
+}
+.ds-svc-vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ds-svc-h2 {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-serif);
+  font-weight: var(--weight-strong);
+  font-size: max(24px, var(--text-h2));
+  line-height: var(--leading-h2);
+  color: var(--color-text);
+}
+.ds-svc-guides {
+  margin-bottom: var(--space-7);
+}
+.ds-svc-guide-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.ds-svc-guide-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--color-surface-2);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background-color var(--dur-1) var(--ease-standard), border-color var(--dur-1) var(--ease-standard), transform var(--dur-1) var(--ease-standard);
+}
+.ds-svc-guide-row:hover {
+  background: var(--color-surface-3);
+  border-color: var(--color-brand);
+}
+.ds-svc-guide-row:active {
+  transform: translateY(1px);
+}
+.ds-svc-guide-row:focus-visible,
+.ds-svc-viewall:focus-visible,
+.ds-svc-notice:focus-visible,
+.ds-svc-portal:focus-visible {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+}
+.ds-svc-guide-body {
+  flex: 1;
+  min-width: 0;
+}
+.ds-svc-guide-title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  color: var(--color-text);
+}
+.ds-svc-guide-intro {
+  margin: var(--space-2) 0 var(--space-3);
+  max-width: 70ch;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+.ds-svc-guide-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text);
+}
+.ds-svc-guide-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ds-svc-chev {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  color: var(--color-brand);
+  transition: transform var(--dur-1) var(--ease-standard);
+}
+.ds-svc-guide-row:hover .ds-svc-chev {
+  transform: translateX(4px);
+}
+
+.ds-svc-notices {
+  margin-bottom: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: var(--border-hair) solid var(--color-line);
+}
+.ds-svc-notices-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+.ds-svc-notices-head .ds-svc-h2 {
+  margin-bottom: var(--space-3);
+}
+.ds-svc-viewall {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  font-size: var(--text-label);
+  font-weight: var(--weight-strong);
+  color: var(--color-brand);
+  text-underline-offset: 3px;
+}
+.ds-svc-viewall:hover {
+  color: var(--color-text);
+}
+.ds-svc-notice-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ds-svc-notice {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-2);
+  border-bottom: var(--border-hair) solid var(--color-line);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background-color var(--dur-1) var(--ease-standard);
+}
+.ds-svc-notice:hover {
+  background: var(--color-surface-3);
+}
+.ds-svc-notice-title {
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+}
+.ds-svc-notice-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+.ds-svc-ask {
+  margin-top: var(--space-5);
+}
+
+@media (max-width: 860px) {
+  .ds-svc-head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+    margin-bottom: var(--space-6);
+  }
+  .ds-svc-desc {
+    max-width: none;
+  }
+}
+@media (max-width: 640px) {
+  .ds-svc-ic {
+    width: 52px;
+    height: 52px;
+  }
+  .ds-svc-guide-row {
+    padding: var(--space-4);
+    align-items: flex-start;
+  }
+  .ds-svc-chev {
+    margin-top: var(--space-1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-dir-main,
+  .ds-dir-ic,
+  .ds-dir-chev,
+  .ds-dir-toggle-ic,
+  .ds-svc-guide-row,
+  .ds-svc-chev,
+  .ds-svc-notice {
+    transition: none;
+  }
+  .ds-dir-main:active,
+  .ds-svc-guide-row:active,
+  .ds-dir-main:hover .ds-dir-chev,
+  .ds-svc-guide-row:hover .ds-svc-chev {
+    transform: none;
+  }
+}

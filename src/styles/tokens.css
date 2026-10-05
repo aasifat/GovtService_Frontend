@@ -1,0 +1,99 @@
+/* Base page styles. The colours, fonts, radii and shadows come from the design-system
+   tokens (ds-tokens.css); Phase 10 removed the legacy --bg / --surface / --ink /
+   --primary ... variables that used to be declared here. Only color-scheme stays. */
+:root {
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html {
+  scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 80px);
+  -webkit-text-size-adjust: 100%;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+body {
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+img,
+svg {
+  max-width: 100%;
+}
+a {
+  color: var(--color-brand);
+}
+button {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--font-sans);
+  line-height: 1.3;
+  margin: 0;
+  font-weight: var(--weight-strong);
+}
+.wrap {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.app {
+  /* Fill at least the whole window so the footer sits at the bottom on short
+     pages. dvh tracks mobile browser toolbars; vh is the fallback. The safe-area
+     insets are subtracted because :root already pads by them. */
+  min-height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  min-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
+}
+
+@media (max-width: 640px) {
+  .wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+@media print {
+  .hdr,
+  .fab,
+  .chat,
+  .ask-band,
+  .tabs,
+  .foot {
+    display: none !important;
+  }
+}

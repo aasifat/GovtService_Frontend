@@ -1,0 +1,78 @@
+/* Profile page. Heading and tab text sit on the page background, so they use
+   --page-ink / --page-muted; the cards use --ink / --muted. */
+.profile-page {
+  max-width: 760px;
+}
+.page-note {
+  color: var(--color-text-muted);
+}
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 8px 0 22px;
+}
+.profile-head h1 {
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  color: var(--color-text);
+}
+.profile-head p {
+  margin: 2px 0 0;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 12px;
+}
+.profile-page .tabs {
+  margin-bottom: 20px;
+}
+.profile-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.lang-pref {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lang-pref legend {
+  padding: 0;
+  margin-bottom: 6px;
+}
+.lang-pref .seg {
+  align-self: flex-start;
+}
+.lang-pref .seg button {
+  padding: 8px 16px;
+  min-height: 40px;
+}
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.save-msg {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+.save-msg.bad {
+  color: var(--color-error);
+}
+.profile-card.danger {
+  border-color: var(--color-error);
+  align-items: flex-start;
+}
+.profile-card.danger h2 {
+  font-size: 1.1rem;
+  color: var(--color-error);
+}
+.profile-card.danger p {
+  margin: 0;
+  color: var(--color-text-muted);
+}

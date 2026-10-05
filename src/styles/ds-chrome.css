@@ -1,0 +1,699 @@
+/* Amar Sheba design system, Phase 2b: application chrome.
+   The header, its menus, the footer and the phone bottom navigation.
+
+   Rules for this file (checked by a scan before every import):
+   - Class selectors only. No html, body, *, a, button or heading selectors on
+     their own: every element selector sits inside a .ds-* / .hdr / .foot scope.
+   - Reads only the new --color-* / --space-* / --radius-* / --text-* / --font-*
+     / --ease-* / --dur-* tokens (ds-tokens.css).
+   - Contract classes used by browser scripts (.hdr, .brand, .nav, .ctrls, .seg,
+     .icon-btn, .avatar, .hdr-login, .hdr-register, .mobile-menu, .pop, .pop-item,
+     .foot ...) stay on the elements; this file styles them.
+
+   The header is SOLID on every page. (A transparent header over the home hero
+   and an expanding search belong to Phase 3.)
+
+   Header height: one height for guests and signed-in users (Phase 10), so the
+   page content under the header does not move when the session resolves. While
+   the session is loading the Login/Register slot is reserved invisibly
+   (.auth-ph) so the controls keep their place for guests. */
+
+/* ================= header ================= */
+.ds-hdr {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 30;
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  border-bottom: var(--border-hair) solid var(--color-line);
+  font-family: var(--font-sans);
+  /* total header height incl. its 1px border: the previous header's height to the layout unit */
+  --hdr-h: calc(1.65rem + 39px);
+}
+.ds-hdr .hdr-in {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: calc(var(--hdr-h) - 1px);
+}
+
+/* brand */
+.ds-hdr .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+}
+.ds-hdr .brand-txt {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  min-width: 0;
+}
+.ds-hdr .brand-bn {
+  font-family: var(--font-sans-bn);
+  font-weight: var(--weight-strong);
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+.ds-hdr .brand-en {
+  font-size: var(--text-badge);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* main navigation with the sliding active underline */
+.ds-hdr .ds-hdr-nav {
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  margin-left: 12px;
+}
+.ds-hdr .ds-hdr-nav a,
+.ds-hdr .ds-hdr-nav .linkish {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--dur-1) var(--ease-standard), background-color var(--dur-1) var(--ease-standard);
+}
+.ds-hdr .ds-hdr-nav a:hover,
+.ds-hdr .ds-hdr-nav .linkish:hover {
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+.ds-hdr .ds-hdr-nav a[aria-current="page"] {
+  color: var(--color-text);
+}
+.ds-hdr .ds-hdr-ind {
+  position: absolute;
+  left: 0;
+  bottom: -1px; /* sits on the header's bottom hairline */
+  height: 2px;
+  width: 0;
+  background: var(--color-brand);
+  opacity: 0;
+  pointer-events: none;
+}
+.ds-hdr .ds-hdr-ind.on {
+  opacity: 1;
+  transition: transform var(--dur-2) var(--ease-standard), width var(--dur-2) var(--ease-standard);
+}
+
+/* controls */
+.ds-hdr .ctrls {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ds-hdr .seg {
+  display: flex;
+  background: var(--color-surface-2);
+  border: var(--border-hair) solid var(--color-border-input);
+  border-radius: var(--radius-md);
+  padding: 2px;
+}
+.ds-hdr .seg button {
+  min-width: 38px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-small);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--dur-1) var(--ease-standard), color var(--dur-1) var(--ease-standard);
+}
+.ds-hdr .seg button:hover:not(:disabled):not(.on) {
+  color: var(--color-text);
+}
+.ds-hdr .seg button.on {
+  background: var(--color-surface-3);
+  color: var(--color-text);
+  box-shadow: none;
+}
+.ds-hdr .seg button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.ds-hdr .seg.size span {
+  font-size: 0.75em;
+  margin-left: 1px;
+}
+.ds-hdr .icon-btn {
+  width: 40px;
+  height: 40px;
+  border: var(--border-hair) solid var(--color-border-input);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  transition: background-color var(--dur-1) var(--ease-standard);
+}
+.ds-hdr .icon-btn:hover {
+  background: var(--color-surface-3);
+}
+.ds-hdr .avatar {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-brand);
+  color: var(--color-text-on-brand);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  transition: box-shadow var(--dur-1) var(--ease-standard);
+}
+.ds-hdr .avatar:hover {
+  background: var(--color-brand);
+  box-shadow: 0 0 0 3px var(--color-brand-soft);
+}
+.ds-hdr .auth-desktop {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ds-hdr .user-menu {
+  position: relative;
+}
+.ds-hdr a.hdr-login,
+.ds-hdr a.hdr-register,
+.ds-hdr .auth-ph .ph-login,
+.ds-hdr .auth-ph .ph-register {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  text-decoration: none;
+}
+.ds-hdr .auth-ph {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  visibility: hidden; /* takes the guest buttons' space, shows nothing, cannot be focused */
+}
+.ds-hdr a.hdr-login,
+.ds-hdr .auth-ph .ph-login {
+  padding: 0 12px;
+  border: var(--border-hair) solid transparent;
+  background: none;
+  color: var(--color-brand);
+}
+.ds-hdr a.hdr-login:hover {
+  background: var(--color-brand-soft);
+}
+.ds-hdr a.hdr-register,
+.ds-hdr .auth-ph .ph-register {
+  padding: 0 16px;
+  border: var(--border-hair) solid var(--color-border-input);
+  background: none;
+  color: var(--color-text);
+}
+.ds-hdr a.hdr-register:hover {
+  background: var(--color-surface-3);
+  border-color: var(--color-brand);
+  color: var(--color-text);
+}
+
+/* popovers: the user menu and the compact menu */
+.ds-hdr .pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  min-width: 240px;
+  max-width: calc(100vw - 24px);
+  padding: var(--space-2);
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+  animation: ds-pop-in var(--dur-1) var(--ease-standard);
+}
+.ds-hdr .pop-who {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px 10px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.ds-hdr .pop-who b {
+  font-weight: var(--weight-strong);
+}
+.ds-hdr .pop-who span {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+.ds-hdr .pop-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ds-hdr .pop-item:hover {
+  background: var(--color-surface-3);
+}
+.ds-hdr .pop-sep {
+  height: var(--border-hair);
+  margin: 6px 4px;
+  background: var(--color-line);
+}
+.ds-hdr .pop-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 10px;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+.ds-hdr .pop .seg.size {
+  display: flex;
+}
+@keyframes ds-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* the compact menu button is only for narrow screens */
+.ds-hdr .mobile-menu {
+  display: none;
+  position: relative;
+}
+
+/* focus: one visible ring everywhere in the chrome */
+.ds-hdr a:focus-visible,
+.ds-hdr button:focus-visible {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+}
+.ds-hdr .ds-hdr-nav a:focus-visible,
+.ds-hdr .ds-hdr-nav .linkish:focus-visible {
+  outline-offset: -3px;
+}
+
+/* ---- compact header: tablets and phones (860px and below) ---- */
+@media (max-width: 860px) {
+  .ds-hdr {
+    --hdr-h: calc(1.4014rem + 33px); /* 55.42px at a 16px root: the previous header height to the layout unit */
+  }
+  .ds-hdr .hdr-in {
+    padding: 0 14px;
+    gap: 10px;
+  }
+  .ds-hdr .ds-hdr-nav,
+  .ds-hdr .auth-desktop,
+  .ds-hdr .size-desktop {
+    display: none;
+  }
+  .ds-hdr .mobile-menu {
+    display: block;
+  }
+  .ds-hdr .ctrls {
+    gap: 6px;
+  }
+  /* the popover spans the header so it never runs off a narrow screen */
+  .ds-hdr .mobile-menu {
+    position: static;
+  }
+  .ds-hdr .pop-mobile {
+    left: 12px;
+    right: 12px;
+    top: calc(100% + 4px);
+    max-width: none;
+  }
+}
+@media (max-width: 640px) {
+  .ds-hdr .brand-en {
+    display: none;
+  }
+  .ds-hdr .seg button {
+    min-width: 32px;
+    padding: 0 7px;
+  }
+}
+@media (max-width: 360px) {
+  .ds-hdr .hdr-in {
+    padding: 0 10px;
+    gap: 6px;
+  }
+  .ds-hdr .brand {
+    gap: 6px;
+  }
+  .ds-hdr .brand-bn {
+    font-size: 1.05rem;
+  }
+  .ds-hdr .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+  .ds-hdr .seg button {
+    min-width: 28px;
+    padding: 0 5px;
+  }
+}
+
+/* ================= footer ================= */
+.ds-foot {
+  background: var(--color-hero);
+  color: var(--color-text-on-hero);
+  border-top: 0;
+  font-family: var(--font-sans);
+}
+.ds-foot .foot-in {
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-9);
+}
+.ds-foot .foot-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans-bn);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  color: var(--color-text-on-hero);
+}
+.ds-foot p {
+  max-width: 70ch;
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-on-hero-muted);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+}
+.ds-foot p.foot-small {
+  font-size: var(--text-badge);
+}
+
+/* ================= bottom navigation (phones) ================= */
+.ds-bnav {
+  display: none;
+}
+@media (max-width: 640px) {
+  .ds-bnav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 28;
+    height: calc(56px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--color-surface-1);
+    border-top: var(--border-hair) solid var(--color-line);
+    font-family: var(--font-sans);
+    transition: transform var(--dur-2) var(--ease-standard);
+  }
+  .ds-bnav.is-hidden {
+    transform: translateY(100%);
+  }
+  .ds-bnav .bnav-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+    min-height: 56px;
+    padding: 0 4px;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+    font-weight: var(--weight-strong);
+    font-size: var(--text-badge);
+    line-height: 1.1;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .ds-bnav .bnav-item span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ds-bnav .bnav-item:hover {
+    color: var(--color-text);
+  }
+  .ds-bnav .bnav-item[aria-current="page"] {
+    color: var(--color-brand);
+  }
+  .ds-bnav .bnav-item[aria-current="page"]::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: var(--color-brand);
+  }
+  .ds-bnav .bnav-item:focus-visible {
+    outline: var(--border-strong) solid var(--color-focus);
+    outline-offset: -4px;
+  }
+  /* page content clears the bar; the floating chat button is replaced by Ask */
+  .app {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+  .fab {
+    display: none;
+  }
+}
+
+/* ================= reduced motion ================= */
+@media (prefers-reduced-motion: reduce) {
+  .ds-hdr .pop {
+    animation: none;
+  }
+  .ds-hdr .ds-hdr-ind.on,
+  .ds-hdr .ds-hdr-nav a,
+  .ds-hdr .ds-hdr-nav .linkish,
+  .ds-hdr .seg button,
+  .ds-hdr .icon-btn,
+  .ds-hdr .avatar,
+  .ds-bnav {
+    transition: none;
+  }
+}
+
+/* ================= Phase 3: Home-only header states ================= */
+/* On Home the header keeps its normal footprint (so nothing moves when its look
+   changes) but the hero slides up underneath it. Over the hero, at the top of the
+   page, it is transparent; after ~24px of scroll it is the normal solid header. */
+.ds-hdr.is-home {
+  margin-bottom: calc(-1 * var(--hdr-h));
+}
+.ds-hdr.is-home.is-settled {
+  transition: background-color var(--dur-2) var(--ease-standard), border-color var(--dur-2) var(--ease-standard);
+}
+.ds-hdr.is-home.is-top {
+  background: transparent;
+  border-bottom-color: transparent;
+}
+/* Transparent state: hero colours for the bar itself (never for the popovers,
+   which stay on their own solid surface). */
+.ds-hdr.is-top .hdr-in > .brand {
+  color: var(--color-text-on-hero);
+}
+.ds-hdr.is-top .hdr-in > .brand .brand-en {
+  color: var(--color-text-on-hero-muted);
+}
+.ds-hdr.is-top .ds-hdr-nav a,
+.ds-hdr.is-top .ds-hdr-nav .linkish {
+  color: var(--color-text-on-hero-muted);
+}
+.ds-hdr.is-top .ds-hdr-nav a:hover,
+.ds-hdr.is-top .ds-hdr-nav .linkish:hover {
+  color: var(--color-text-on-hero);
+  background: rgb(241 237 224 / 0.1);
+}
+.ds-hdr.is-top .ds-hdr-nav a[aria-current="page"] {
+  color: var(--color-text-on-hero);
+}
+.ds-hdr.is-top .ds-hdr-ind {
+  background: var(--color-action);
+}
+.ds-hdr.is-top .ctrls > .seg {
+  background: rgb(241 237 224 / 0.1);
+  border-color: rgb(241 237 224 / 0.4);
+}
+.ds-hdr.is-top .ctrls > .seg button {
+  color: var(--color-text-on-hero-muted);
+}
+.ds-hdr.is-top .ctrls > .seg button:hover:not(:disabled):not(.on) {
+  color: var(--color-text-on-hero);
+}
+.ds-hdr.is-top .ctrls > .seg button.on {
+  background: rgb(241 237 224 / 0.2);
+  color: var(--color-text-on-hero);
+}
+.ds-hdr.is-top .ctrls > .icon-btn,
+.ds-hdr.is-top .ctrls .mobile-menu > .icon-btn,
+.ds-hdr.is-top .ctrls .hsearch-toggle {
+  background: transparent;
+  border-color: rgb(241 237 224 / 0.4);
+  color: var(--color-text-on-hero);
+}
+.ds-hdr.is-top .ctrls > .icon-btn:hover,
+.ds-hdr.is-top .ctrls .mobile-menu > .icon-btn:hover,
+.ds-hdr.is-top .ctrls .hsearch-toggle:hover {
+  background: rgb(241 237 224 / 0.14);
+}
+.ds-hdr.is-top .auth-desktop a.hdr-login {
+  color: var(--color-focus-on-hero);
+}
+.ds-hdr.is-top .auth-desktop a.hdr-login:hover {
+  background: rgb(241 237 224 / 0.1);
+}
+.ds-hdr.is-top .auth-desktop a.hdr-register {
+  border-color: rgb(241 237 224 / 0.5);
+  color: var(--color-text-on-hero);
+}
+.ds-hdr.is-top .auth-desktop a.hdr-register:hover {
+  background: rgb(241 237 224 / 0.14);
+  border-color: var(--color-focus-on-hero);
+  color: var(--color-text-on-hero);
+}
+.ds-hdr.is-top .auth-desktop .avatar {
+  background: var(--color-focus-on-hero);
+  color: #07130e;
+}
+.ds-hdr.is-top .auth-desktop .avatar:hover {
+  box-shadow: 0 0 0 3px rgb(127 209 170 / 0.3);
+}
+/* focus rings on the bar over the hero use the hero ring colour */
+.ds-hdr.is-top .hdr-in > .brand:focus-visible,
+.ds-hdr.is-top .ds-hdr-nav a:focus-visible,
+.ds-hdr.is-top .ds-hdr-nav .linkish:focus-visible,
+.ds-hdr.is-top .ctrls > .seg button:focus-visible,
+.ds-hdr.is-top .ctrls > .icon-btn:focus-visible,
+.ds-hdr.is-top .ctrls .mobile-menu > .icon-btn:focus-visible,
+.ds-hdr.is-top .ctrls .hsearch-toggle:focus-visible,
+.ds-hdr.is-top .auth-desktop a:focus-visible,
+.ds-hdr.is-top .auth-desktop .avatar:focus-visible {
+  outline-color: var(--color-focus-on-hero);
+}
+
+/* ---- the expanding search (Home only, wide screens) ---- */
+.ds-hdr .hsearch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.ds-hdr .hsearch-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 1 360px;
+  min-width: 160px;
+  height: 40px;
+  padding: 0 12px;
+  background: var(--color-surface-2);
+  border: var(--border-hair) solid var(--color-border-input);
+  border-radius: var(--radius-md);
+  animation: ds-hs-open var(--dur-2) var(--ease-standard);
+}
+.ds-hdr .hsearch-form .search-ic {
+  flex-shrink: 0;
+  margin-right: 8px;
+  color: var(--color-text-muted);
+}
+.ds-hdr .hsearch-form:focus-within {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+}
+.ds-hdr .hsearch-form input {
+  font-size: var(--text-label);
+  padding: 0;
+}
+@keyframes ds-hs-open {
+  from {
+    max-width: 0;
+    opacity: 0;
+  }
+  to {
+    max-width: 360px;
+    opacity: 1;
+  }
+}
+.ds-hdr.is-top .hsearch-form {
+  background: rgb(241 237 224 / 0.12);
+  border-color: rgb(241 237 224 / 0.45);
+}
+.ds-hdr.is-top .hsearch-form input {
+  color: var(--color-text-on-hero);
+}
+.ds-hdr.is-top .hsearch-form input::placeholder,
+.ds-hdr.is-top .hsearch-form .search-ic {
+  color: var(--color-text-on-hero-muted);
+}
+.ds-hdr.is-top .hsearch-form:focus-within {
+  outline-color: var(--color-focus-on-hero);
+}
+.ds-hdr .hsearch .drop {
+  left: auto;
+  right: 0;
+  width: max(100%, 340px);
+}
+.ds-hdr.is-searching .ds-hdr-nav {
+  display: none;
+}
+@media (max-width: 860px) {
+  /* the compact header has no room for it: the hero search is the one search */
+  .ds-hdr .hsearch {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-hdr.is-home.is-settled {
+    transition: none;
+  }
+  .ds-hdr .hsearch-form {
+    animation: none;
+  }
+}

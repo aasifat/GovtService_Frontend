@@ -1,0 +1,792 @@
+/* Amar Sheba design system, Phase 7: announcements (the public list and the detail page).
+
+   Scoped: every selector starts with .ds-anl (the list page's <main>) or .ds-adet (the
+   detail page's <main>). No element selectors at all (no body, html, *, a, p, button,
+   h1-h6, ul, li, input, select, dl, dt, dd ...): elements are styled through their
+   classes. Declares no custom properties and changes no token.
+
+   The legacy rules for these pages live in announcements.css, which is left in place:
+   the admin screens (Phase 9) still use .ann-chip, .ann-tag, .ann-ctl, .ann-count,
+   .ann-panel, .att-* and, in the form's live preview, .ann-card. Where a legacy rule
+   would still apply on these two pages, the selector below carries one more class
+   (the page class) so it wins; the legacy classes stay on the elements for scripts.
+
+   Reads ONLY the new DS tokens. Serif: the page H1 and the featured card's title, both
+   at 24px or more. Every Bangla size comes from tokens that carry the 14px Bangla floor
+   (also at the A- setting).
+
+   Motion: hover tints and a focus ring only, all removed under prefers-reduced-motion. */
+
+/* ================= shared bits ================= */
+.ds-anl,
+.ds-adet {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+.ds-anl .ds-anl-vh,
+.ds-adet .ds-adet-vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ================= list page ================= */
+/* Control borders (chips, the select, the search box) are the DS input-border colour nudged toward the text
+   colour: against the legacy page background that is still in use on this page (until Phase 10) the plain
+   token measures exactly 3.0:1. A use-site mix, not a token change. */
+.ds-anl.ann-page {
+  max-width: 1120px;
+}
+.ds-anl .ds-anl-head {
+  margin: var(--space-5) 0 var(--space-5);
+}
+.ds-anl .ds-anl-h1 {
+  margin: 0;
+  max-width: 24ch;
+  font-family: var(--font-serif);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-h1);
+  line-height: var(--leading-h1);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+.ds-anl .ds-anl-sub {
+  margin: var(--space-3) 0 0;
+  max-width: 80ch; /* one line in both the fallback and the real font, so the swap does not move the page */
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+
+/* ---- filters ---- */
+.ds-anl .ds-anl-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: var(--space-4) 0 var(--space-2);
+}
+.ds-anl .ds-anl-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.ds-anl .ds-anl-chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  border: var(--border-hair) solid var(--color-border-input);
+  border: var(--border-hair) solid color-mix(in srgb, var(--color-border-input) 85%, var(--color-text));
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  cursor: pointer;
+  transition: border-color var(--dur-1) var(--ease-standard), background-color var(--dur-1) var(--ease-standard);
+}
+.ds-anl .ds-anl-chip:hover {
+  border-color: var(--color-brand);
+  color: var(--color-text);
+}
+.ds-anl .ds-anl-chip.on {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+  color: var(--color-text-on-brand);
+  font-weight: var(--weight-strong);
+}
+.ds-anl .ds-anl-chip:focus-visible {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+}
+.ds-anl .ds-anl-controls {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: end;
+}
+.ds-anl .ds-anl-ctl {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  color: var(--color-text);
+}
+.ds-anl .ds-anl-ctl .ds-input {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--size-input);
+  padding: 0 var(--space-4);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: var(--border-hair) solid var(--color-border-input);
+  border: var(--border-hair) solid color-mix(in srgb, var(--color-border-input) 85%, var(--color-text));
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-body);
+}
+.ds-anl .ds-anl-ctl .ds-input:hover {
+  border-color: var(--color-brand);
+}
+.ds-anl .ds-anl-ctl .ds-input:focus-visible {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+  border-color: var(--color-focus);
+}
+.ds-anl .ds-anl-count {
+  margin: var(--space-5) 0 var(--space-3);
+  min-height: 1.5em;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+
+/* ---- the list: the featured card, then the ledger ---- */
+.ds-anl .ds-anl-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.ds-anl .ds-anl-item {
+  position: relative;
+  min-width: 0;
+  color: var(--color-text);
+}
+.ds-anl .ds-anl-lead {
+  min-width: 0;
+}
+.ds-anl .ds-anl-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.ds-anl .ds-anl-date {
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* featured: the newest published item */
+.ds-anl .ds-anl-featured {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  padding: var(--space-6);
+  background: var(--color-surface-1);
+  border: var(--border-hair) solid var(--color-line);
+  border-top: var(--border-strong) solid var(--color-brand);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  transition: box-shadow var(--dur-2) var(--ease-standard);
+}
+.ds-anl .ds-anl-featured:hover {
+  box-shadow: var(--shadow-2);
+}
+.ds-anl .ds-anl-featured .ds-anl-lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+}
+.ds-anl .ds-anl-eyebrow {
+  font-weight: var(--weight-strong);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-brand);
+}
+.ds-anl .ds-anl-featured .ds-anl-main {
+  gap: var(--space-3);
+}
+.ds-anl .ds-anl-featured .ds-anl-title {
+  font-family: var(--font-serif);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-h2);
+  line-height: var(--leading-h2);
+}
+.ds-anl .ds-anl-featured .ds-anl-sum {
+  max-width: 68ch;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text);
+}
+
+/* ledger rows: a date column, then the item */
+.ds-anl .ds-anl-row {
+  display: grid;
+  grid-template-columns: 9.5rem minmax(0, 1fr);
+  column-gap: var(--space-5);
+  padding: var(--space-5) var(--space-3);
+  background: transparent;
+  border: 0;
+  border-bottom: var(--border-hair) solid var(--color-line);
+  border-radius: 0;
+  box-shadow: none;
+  transition: background-color var(--dur-1) var(--ease-standard);
+}
+.ds-anl .ds-anl-featured + .ds-anl-row,
+.ds-anl .ds-anl-list > .ds-anl-row:first-child {
+  border-top: var(--border-hair) solid var(--color-line);
+}
+.ds-anl .ds-anl-row:hover {
+  background: var(--color-surface-1);
+}
+.ds-anl .ds-anl-row .ds-anl-lead {
+  padding-top: 3px;
+}
+.ds-anl .ds-anl-row .ds-anl-title {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+}
+.ds-anl .ds-anl-row .ds-anl-sum {
+  max-width: 68ch;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+
+/* the title: the whole item is one click target (a stretched link); the controls inside
+   the item stay separately clickable above it */
+.ds-anl .ds-anl-title {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+}
+.ds-anl .ds-anl-titlelink {
+  display: block;
+  color: var(--color-text);
+  text-decoration: none;
+}
+.ds-anl .ds-anl-titlelink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.ds-anl .ds-anl-titlelink:hover {
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.ds-anl .ds-anl-titlelink:focus-visible {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+}
+@supports selector(:has(a)) {
+  .ds-anl .ds-anl-titlelink:focus-visible {
+    outline: none;
+  }
+  .ds-anl .ds-anl-item:has(.ds-anl-title a:focus-visible) {
+    outline: var(--border-strong) solid var(--color-focus);
+    outline-offset: -2px;
+  }
+  .ds-anl .ds-anl-featured:has(.ds-anl-title a:focus-visible) {
+    outline-offset: 2px;
+  }
+}
+
+/* tags and flags */
+.ds-anl .ds-anl-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.ds-anl .ds-anl-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 var(--space-3);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-pill);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-badge);
+  line-height: 1.2;
+  text-decoration: none;
+}
+.ds-anl .ds-anl-tag.ds-anl-type {
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+  border-color: transparent;
+  font-weight: var(--weight-strong);
+}
+.ds-anl .ds-badge.ann-new {
+  letter-spacing: 0.04em;
+}
+.ds-anl .ds-badge.ann-chip.draft {
+  min-height: 24px;
+  padding: 0 var(--space-3);
+  border: 0;
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  font-size: var(--text-badge);
+  font-weight: var(--weight-strong);
+  cursor: default;
+}
+.ds-anl .ds-badge.ann-sample {
+  font-size: var(--text-badge);
+  color: var(--color-warning);
+}
+.ds-anl .ds-badge.ann-sample::before {
+  content: none;
+}
+.ds-anl .ds-anl-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px var(--space-4);
+  margin: 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+.ds-anl .ds-anl-sum {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.ds-anl .ds-anl-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-2);
+}
+.ds-anl .ds-anl-actions .ds-anl-read {
+  position: relative;
+  z-index: 1;
+  min-height: var(--size-control-sm);
+  padding: 0 var(--space-4);
+  text-decoration: none;
+}
+.ds-anl .ds-anl-row .ds-anl-actions .ds-anl-read {
+  margin-inline-start: calc(-1 * var(--space-2));
+  padding: 0 var(--space-2);
+  background: transparent;
+  border-color: transparent;
+  color: var(--color-brand);
+}
+.ds-anl .ds-anl-row .ds-anl-actions .ds-anl-read:hover:not(:disabled) {
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+}
+.ds-anl .ds-anl-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+.ds-anl .ds-anl-src {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 24px;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-brand);
+  text-underline-offset: 3px;
+}
+.ds-anl .ds-anl-src:focus-visible {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* loading, empty, error, load more */
+.ds-anl .ds-anl-loading {
+  position: relative;
+  min-height: 100vh;
+  padding: 0;
+  color: var(--color-text);
+}
+.ds-anl .ds-anl-skel-feat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding: var(--space-6);
+  background: var(--color-surface-1);
+  border: var(--border-hair) solid var(--color-line);
+  border-top: var(--border-strong) solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+.ds-anl .ds-anl-skel-row {
+  display: grid;
+  grid-template-columns: 9.5rem minmax(0, 1fr);
+  column-gap: var(--space-5);
+  padding: var(--space-5) var(--space-3);
+  border-bottom: var(--border-hair) solid var(--color-line);
+}
+.ds-anl .ds-anl-state {
+  margin: 0;
+  padding: var(--space-5);
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+.ds-anl .ds-anl-state .ds-anl-state-text {
+  margin: 0 0 var(--space-3);
+}
+.ds-anl .ds-anl-more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+
+/* ================= detail page ================= */
+.ds-adet.ann-detail {
+  max-width: 1120px;
+}
+.ds-adet:lang(bn) .crumbs {
+  font-size: max(0.9rem, var(--text-min-bn));
+}
+.ds-adet .ds-adet-crumbs {
+  grid-area: crumbs;
+}
+.ds-adet .ds-adet-draft {
+  grid-area: draft;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  border: var(--border-hair) solid var(--color-error);
+  border-radius: var(--radius-md);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+}
+.ds-adet .ds-adet-head {
+  grid-area: head;
+  margin: var(--space-5) 0 var(--space-5);
+}
+.ds-adet .ds-adet-h1 {
+  margin: 0;
+  max-width: 28ch;
+  font-family: var(--font-serif);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-h1);
+  line-height: var(--leading-h1);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+.ds-adet .ds-adet-intro {
+  margin: var(--space-3) 0 0;
+  max-width: 62ch;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+
+/* layout: one column; two columns (reading column + rail) from 1100px. Every area is
+   a grid-area so the optional draft banner and attachments need no extra markup. */
+.ds-adet.ann-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "crumbs"
+    "draft"
+    "head"
+    "rail"
+    "doc"
+    "att"
+    "back";
+  align-content: start;
+}
+.ds-adet .ds-adet-facts {
+  grid-area: rail;
+}
+.ds-adet .ds-adet-doc {
+  grid-area: doc;
+}
+.ds-adet .ds-adet-att {
+  grid-area: att;
+}
+.ds-adet .ds-adet-backwrap {
+  grid-area: back;
+}
+@media (min-width: 1100px) {
+  .ds-adet.ann-detail {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    grid-template-areas:
+      "crumbs crumbs"
+      "draft  draft"
+      "head   head"
+      "doc    rail"
+      "att    rail"
+      "back   rail";
+    column-gap: var(--space-7);
+  }
+  .ds-adet .ds-adet-facts {
+    align-self: start;
+    position: sticky;
+    top: calc(1.65rem + 39px + var(--space-5));
+  }
+}
+
+.ds-adet .ds-adet-panel {
+  min-width: 0;
+  margin-bottom: var(--space-5);
+  padding: var(--space-5);
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
+}
+.ds-adet .ds-adet-h2 {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  color: var(--color-text);
+}
+
+/* facts (the rail) */
+.ds-adet .ds-adet-dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4) var(--space-5);
+  margin: 0;
+}
+@media (min-width: 1100px) {
+  .ds-adet .ds-adet-dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.ds-adet .ds-adet-dt {
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+.ds-adet .ds-adet-dd {
+  margin: 2px 0 0;
+  font-weight: var(--weight-strong);
+  font-size: var(--text-body);
+  line-height: var(--leading-small);
+  overflow-wrap: anywhere;
+}
+.ds-adet .ds-adet-dd.ds-adet-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-weight: var(--weight-regular);
+}
+.ds-adet .ds-adet-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 var(--space-3);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-small);
+  line-height: 1.2;
+  text-decoration: none;
+}
+.ds-adet .ds-adet-tag:hover {
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
+.ds-adet .ds-adet-tag:focus-visible,
+.ds-adet .ds-adet-link:focus-visible,
+.ds-adet .ds-adet-back:focus-visible,
+.ds-adet .ds-adet-dl-btn:focus-visible {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+}
+.ds-adet .ds-adet-sample {
+  display: flex;
+  align-items: center;
+  margin: var(--space-4) 0 0;
+}
+.ds-adet .ds-adet-source {
+  margin: var(--space-3) 0 0;
+  overflow-wrap: anywhere;
+}
+.ds-adet .ds-adet-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 24px;
+}
+.ds-adet .ds-adet-source .ds-adet-link {
+  color: var(--color-brand);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  text-underline-offset: 3px;
+}
+
+/* the document and the download */
+.ds-adet .ds-adet-file {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-weight: var(--weight-strong);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+}
+.ds-adet .ann-file-size {
+  font-size: var(--text-small);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+}
+.ds-adet .ds-adet-pdf {
+  display: block;
+  width: 100%;
+  height: min(70vh, 720px);
+  min-height: 320px;
+  margin-top: var(--space-3);
+  background: var(--color-surface-2);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-md);
+}
+.ds-adet .ds-adet-pdf:focus-visible {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+}
+.ds-adet .ds-adet-dl-btn {
+  margin-top: var(--space-4);
+  text-decoration: none;
+}
+.ds-adet .ann-dl-gate {
+  margin-top: var(--space-4);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  background: var(--color-surface-2);
+}
+.ds-adet .ds-adet-nopdf {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-muted);
+}
+
+/* attachments */
+.ds-adet .ds-adet-attlist {
+  gap: var(--space-2);
+}
+.ds-adet .ds-adet-attrow {
+  padding: var(--space-3);
+  background: var(--color-surface-2);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-md);
+}
+.ds-adet .ds-adet-attrow .pdf-meta {
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+}
+.ds-adet .ds-adet-attrow .pdf-meta span {
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+}
+.ds-adet .ds-adet-attrow .att-icon {
+  color: var(--color-brand);
+  background: var(--color-surface-1);
+}
+.ds-adet .ds-adet-attrow .ds-btn {
+  text-decoration: none;
+}
+
+/* back, loading and the not-found / error state */
+.ds-adet .ds-adet-backwrap {
+  margin-top: var(--space-2);
+}
+.ds-adet .ds-adet-back {
+  text-decoration: none;
+}
+.ds-adet.ds-adet--state .ds-adet-head {
+  margin-top: var(--space-6);
+}
+.ds-adet .ds-adet-loading {
+  position: relative;
+  min-height: 100vh; /* at least a screen, so the footer is not in view while loading and does not jump */
+  padding: 0;
+  color: var(--color-text);
+}
+.ds-adet .ds-adet-skel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-5);
+}
+.ds-adet .ds-adet-skel-doc {
+  height: 360px;
+  background: var(--color-surface-1);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+
+/* ================= phone ================= */
+@media (max-width: 640px) {
+  .ds-anl .ds-anl-chips {
+    flex-wrap: nowrap;
+    margin-inline: calc(-1 * var(--space-4));
+    padding: var(--space-1) var(--space-4);
+    overflow-x: auto;
+    scroll-padding-inline: var(--space-4);
+    scrollbar-width: thin;
+  }
+  .ds-anl .ds-anl-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ds-anl .ds-anl-featured {
+    padding: var(--space-5);
+  }
+  .ds-anl .ds-anl-row,
+  .ds-anl .ds-anl-skel-row {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: 0;
+    row-gap: var(--space-2);
+  }
+  .ds-anl .ds-anl-row .ds-anl-lead {
+    padding-top: 0;
+  }
+  .ds-adet .ds-adet-panel {
+    padding: var(--space-4);
+  }
+  .ds-adet .ds-adet-pdf {
+    height: 60vh;
+  }
+  .ds-adet .ds-adet-dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ================= reduced motion ================= */
+@media (prefers-reduced-motion: reduce) {
+  .ds-anl .ds-anl-chip,
+  .ds-anl .ds-anl-featured,
+  .ds-anl .ds-anl-row {
+    transition: none;
+  }
+}

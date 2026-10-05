@@ -1,0 +1,557 @@
+/* Amar Sheba design system, Phase 1: primitive styles and text styles.
+   Reads ONLY the new --color-* / --space-* / ... tokens from ds-tokens.css.
+   Imported ONLY by the styleguide entry; nothing in the existing app uses it.
+   Forced-state hooks ([data-state="hover|active|focus"]) exist only so the
+   styleguide can show those states side by side; real use never sets them. */
+
+/* ---------- text styles ---------- */
+.ds-t-display,
+.ds-t-h1,
+.ds-t-h2 {
+  font-family: var(--font-serif);
+  font-weight: var(--weight-strong);
+  margin: 0;
+  color: var(--color-text);
+}
+.ds-t-display {
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: -0.015em;
+}
+.ds-t-h1 {
+  font-size: var(--text-h1);
+  line-height: var(--leading-h1);
+  letter-spacing: -0.01em;
+}
+.ds-t-h2 {
+  font-size: var(--text-h2);
+  line-height: var(--leading-h2);
+}
+.ds-t-h3 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  margin: 0;
+  color: var(--color-text);
+}
+.ds-t-body {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text);
+}
+.ds-t-small {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+.ds-t-label {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  color: var(--color-text);
+}
+.ds-t-number {
+  font-family: var(--font-serif);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-number);
+  line-height: var(--leading-number);
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--color-action-ink);
+}
+.ds-t-code {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-mono);
+  font-size: var(--text-code);
+  line-height: var(--leading-code);
+  color: var(--color-text);
+}
+
+/* ---------- shared focus ring ---------- */
+.ds-btn:focus-visible,
+.ds-btn[data-state="focus"],
+.ds-input:focus-visible,
+.ds-input[data-state="focus"],
+.ds-toast-close:focus-visible,
+.ds-link:focus-visible {
+  outline: var(--border-strong) solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Button ---------- */
+.ds-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--size-control);
+  padding: 0 var(--space-5);
+  border: var(--border-hair) solid transparent;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--dur-1) var(--ease-standard), border-color var(--dur-1) var(--ease-standard), color var(--dur-1) var(--ease-standard), transform var(--dur-1) var(--ease-standard);
+}
+.ds-btn--sm {
+  min-height: var(--size-control-sm);
+  padding: 0 var(--space-4);
+}
+.ds-btn--primary {
+  background: var(--color-action);
+  color: var(--color-text-on-action);
+}
+.ds-btn--primary:hover:not(:disabled),
+.ds-btn--primary[data-state="hover"] {
+  background: var(--color-action-hover);
+}
+.ds-btn--primary:active:not(:disabled),
+.ds-btn--primary[data-state="active"] {
+  background: var(--color-action-active);
+  transform: translateY(1px);
+}
+.ds-btn--secondary {
+  background: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border-input);
+}
+.ds-btn--secondary:hover:not(:disabled),
+.ds-btn--secondary[data-state="hover"] {
+  background: var(--color-surface-3);
+  border-color: var(--color-brand);
+}
+.ds-btn--secondary:active:not(:disabled),
+.ds-btn--secondary[data-state="active"] {
+  background: var(--color-surface-2);
+  transform: translateY(1px);
+}
+.ds-btn--ghost {
+  background: transparent;
+  color: var(--color-brand);
+  padding-inline: var(--space-3);
+}
+.ds-btn--ghost:hover:not(:disabled),
+.ds-btn--ghost[data-state="hover"] {
+  background: var(--color-brand-soft);
+}
+.ds-btn--ghost:active:not(:disabled),
+.ds-btn--ghost[data-state="active"] {
+  background: var(--color-surface-3);
+  transform: translateY(1px);
+}
+.ds-btn--danger {
+  background: transparent;
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+.ds-btn--danger:hover:not(:disabled),
+.ds-btn--danger[data-state="hover"] {
+  background: var(--color-error-bg);
+}
+.ds-btn--danger:active:not(:disabled),
+.ds-btn--danger[data-state="active"] {
+  background: var(--color-error-bg);
+  transform: translateY(1px);
+}
+.ds-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.ds-btn[aria-busy="true"] {
+  cursor: progress;
+  opacity: 1; /* loading is not "disabled": keep full strength */
+}
+.ds-btn-label--hidden {
+  visibility: hidden; /* keeps the button's width while loading */
+}
+.ds-spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 18px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: ds-spin 0.8s linear infinite;
+}
+@keyframes ds-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Input ---------- */
+.ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.ds-field-label {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  color: var(--color-text);
+}
+.ds-input {
+  width: 100%;
+  min-height: var(--size-input);
+  padding: 0 var(--space-4);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  border: var(--border-hair) solid var(--color-border-input);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-body);
+  transition: border-color var(--dur-1) var(--ease-standard), background-color var(--dur-1) var(--ease-standard);
+}
+.ds-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+.ds-input:hover:not(:disabled) {
+  border-color: var(--color-brand);
+}
+.ds-input:focus-visible,
+.ds-input[data-state="focus"] {
+  border-color: var(--color-focus);
+}
+.ds-input:disabled {
+  opacity: 0.55;
+  background: var(--color-surface-1);
+  cursor: not-allowed;
+}
+.ds-field--error .ds-input {
+  border-color: var(--color-error);
+  border-width: var(--border-strong);
+  padding-inline: calc(var(--space-4) - 1px);
+}
+.ds-field-help,
+.ds-field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+}
+.ds-field-help {
+  color: var(--color-text-muted);
+}
+.ds-field-error {
+  color: var(--color-error);
+  font-weight: var(--weight-strong);
+}
+.ds-field-error svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ---------- Badge ---------- */
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-badge);
+  line-height: 1;
+  white-space: nowrap;
+  background: var(--color-surface-3);
+  color: var(--color-text);
+}
+.ds-badge--brand {
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+}
+.ds-badge--success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+.ds-badge--warning {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+.ds-badge--error {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+}
+.ds-badge--accent {
+  background: var(--color-accent);
+  color: var(--color-text-on-accent);
+  letter-spacing: 0.04em;
+}
+.ds-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ---------- Surface ---------- */
+.ds-surface {
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  border: var(--border-hair) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-0);
+  padding: var(--space-5);
+  min-width: 0;
+}
+.ds-surface--pad-sm {
+  padding: var(--space-4);
+}
+.ds-surface--pad-lg {
+  padding: var(--space-6);
+}
+.ds-surface--raised {
+  box-shadow: var(--shadow-1);
+}
+.ds-surface--overlay {
+  box-shadow: var(--shadow-3);
+  border-radius: var(--radius-lg);
+}
+.ds-surface--quiet {
+  background: var(--color-surface-2);
+  border-color: transparent;
+}
+.ds-surface--featured {
+  border-color: var(--color-brand);
+  border-top-width: var(--border-strong);
+  box-shadow: var(--shadow-1);
+}
+.ds-surface--inverse {
+  background: var(--color-hero);
+  color: var(--color-text-on-hero);
+  border-color: transparent;
+}
+.ds-surface--interactive {
+  cursor: pointer;
+  transition: transform var(--dur-2) var(--ease-standard), border-color var(--dur-2) var(--ease-standard), box-shadow var(--dur-2) var(--ease-standard);
+}
+.ds-surface--interactive:hover,
+.ds-surface--interactive[data-state="hover"] {
+  border-color: var(--color-brand);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+
+/* ---------- Section ---------- */
+.ds-section {
+  padding-block: var(--space-8);
+}
+.ds-section--rule {
+  border-top: var(--border-hair) solid var(--color-line);
+}
+.ds-section--band {
+  background: var(--color-hero);
+  color: var(--color-text-on-hero);
+  border-radius: var(--radius-lg);
+  padding-inline: var(--space-6);
+}
+.ds-section-head {
+  max-width: 62ch;
+  margin-bottom: var(--space-6);
+}
+.ds-section-eyebrow {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-small);
+  color: var(--color-brand);
+}
+.ds-section--band .ds-section-eyebrow {
+  color: var(--color-action);
+}
+.ds-section--band .ds-t-h2 {
+  color: var(--color-text-on-hero);
+}
+.ds-section-intro {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+}
+.ds-section--band .ds-section-intro {
+  color: var(--color-text-on-hero-muted);
+}
+
+/* ---------- Skeleton ---------- */
+.ds-skel {
+  display: block;
+  background: var(--color-surface-3);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+.ds-skel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--color-surface-2), transparent);
+  opacity: 0.55;
+  transform: translateX(-100%);
+  animation: ds-shimmer 1.6s var(--ease-standard) infinite;
+}
+@keyframes ds-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+.ds-skel--text {
+  height: 0.9em;
+  margin-block: 0.45em;
+}
+.ds-skel--title {
+  height: 1.6em;
+  width: 55%;
+  margin-block: 0.3em;
+}
+.ds-skel--avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ds-skel--thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+}
+.ds-skel--button {
+  width: 120px;
+  height: var(--size-control);
+  border-radius: var(--radius-md);
+}
+.ds-skel--badge {
+  width: 64px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+}
+
+/* ---------- Toast ---------- */
+.ds-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  width: min(420px, 100%);
+  padding: var(--space-4);
+  background: var(--color-surface-1);
+  color: var(--color-text);
+  border: var(--border-hair) solid var(--color-line);
+  border-left: 4px solid var(--toast-tone, var(--color-brand));
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-2);
+  animation: ds-toast-in var(--dur-2) var(--ease-standard) both;
+}
+.ds-toast--info {
+  --toast-tone: var(--color-brand);
+}
+.ds-toast--success {
+  --toast-tone: var(--color-success);
+}
+.ds-toast--warning {
+  --toast-tone: var(--color-warning);
+}
+.ds-toast--error {
+  --toast-tone: var(--color-error);
+}
+.ds-toast-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--toast-tone);
+}
+.ds-toast-body {
+  flex: 1;
+  min-width: 0;
+}
+.ds-toast-title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-strong);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+}
+.ds-toast-msg {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+  color: var(--color-text-muted);
+}
+.ds-toast-action {
+  margin-top: var(--space-2);
+}
+.ds-toast-close {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: var(--size-control-sm);
+  height: var(--size-control-sm);
+  margin: calc(var(--space-2) * -1) calc(var(--space-2) * -1) 0 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+.ds-toast-close:hover {
+  background: var(--color-surface-3);
+  color: var(--color-text);
+}
+@keyframes ds-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.ds-link {
+  color: var(--color-brand);
+  text-underline-offset: 3px;
+}
+
+/* ---------- reduced motion: no travel, no shimmer, no spin ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ds-btn,
+  .ds-input,
+  .ds-surface--interactive {
+    transition: none;
+  }
+  .ds-btn:active,
+  .ds-btn[data-state="active"] {
+    transform: none !important;
+  }
+  .ds-surface--interactive:hover,
+  .ds-surface--interactive[data-state="hover"] {
+    transform: none;
+  }
+  .ds-skel::after {
+    animation: none;
+    opacity: 0;
+  }
+  .ds-spinner {
+    animation: none;
+    border-right-color: currentColor;
+    opacity: 0.6;
+  }
+  .ds-toast {
+    animation: none;
+  }
+}
